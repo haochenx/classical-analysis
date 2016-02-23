@@ -33,6 +33,7 @@ Axiom Rmult_comm : forall r1 r2, r1 * r2 = r2 * r1.
 Axiom Rmult_assoc : forall r1 r2 r3, (r1 * r2) * r3 = r1 * (r2 * r3).
 Axiom One_spec : forall r, r * One = r.
 Axiom Rinv_ex : forall (r : Real), r <> Zero -> exists r', r * r' = One.
+Axiom One_ex : Zero <> One.
 
 Axiom Rdist : forall (r0 r1 r2 : Real), r0 * (r1 + r2) = r0 * r1 + r0 * r2.
 
