@@ -142,6 +142,13 @@ Proof.
   }
 Qed.
 
+Definition refi1 {A : Set} (P : A -> Prop) : A -> bool :=
+  fun a => refi0 (P a).
+
+Definition refi2 {A B : Set} (P : A -> B -> Prop) : A -> B -> bool :=
+  fun a b => refi0 (P a b).
+
+
 Lemma casep : forall (P : Prop), forall (A : Type), (P -> A) -> (~P -> A) -> A.
   move => P A.
   case: (boolP (refi0 P)).
@@ -156,4 +163,3 @@ Lemma casep : forall (P : Prop), forall (A : Type), (P -> A) -> (~P -> A) -> A.
     exact (fun _ f => f refiH).
   }
 Qed.
-
