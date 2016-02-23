@@ -1,12 +1,8 @@
-Module Classical_Analysis.
-
 Require Import ssreflect.
 
 Add LoadPath "../logic".
 Require Import classical.
 Require Import partial.
-
-Section RealNum.
 
 Variable Real : Set.
 Variable Zero : Real.
@@ -57,6 +53,3 @@ Proof.
   unfold Rinv.
   apply: (@HUniqueOut _ (fun p => r * p = One)).
 Qed.
-
-End RealNum.
-End Classical_Analysis.
