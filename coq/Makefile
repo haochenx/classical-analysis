@@ -84,6 +84,7 @@ VFILES:=classical.v\
   ensemble.v\
   partial_function.v\
   realnum_common.v\
+  bound.v\
 
 -include $(addsuffix .d,$(VFILES))
 .SECONDARY: $(addsuffix .d,$(VFILES))
