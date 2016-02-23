@@ -81,6 +81,7 @@ endif
 ######################
 
 VFILES:=classical.v\
+  ensemble.v\
   partial_function.v\
   realnum_common.v\
 
