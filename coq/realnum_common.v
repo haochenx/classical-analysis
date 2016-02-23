@@ -1,8 +1,7 @@
 Require Import ssreflect.
 
-Add LoadPath "../logic".
 Require Import classical.
-Require Import partial.
+Require Import partial_function.
 
 Variable Real : Set.
 Variable Zero : Real.

@@ -6,3 +6,4 @@
 # compiled coq files
 *.glob
 *.vo
+*.v.d
