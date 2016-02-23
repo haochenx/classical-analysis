@@ -32,7 +32,7 @@ Axiom Opp_prop : forall r, r - r = Zero.
 Axiom Rmult_comm : forall r1 r2, r1 * r2 = r2 * r1.
 Axiom Rmult_assoc : forall r1 r2 r3, (r1 * r2) * r3 = r1 * (r2 * r3).
 Axiom One_spec : forall r, r * One = r.
-Axiom Rinv_ex : forall (r : Real), r <> Zero -> exists! r', r * r' = One.
+Axiom Rinv_ex : forall (r : Real), r <> Zero -> exists r', r * r' = One.
 
 Axiom Rdist : forall (r0 r1 r2 : Real), r0 * (r1 + r2) = r0 * r1 + r0 * r2.
 
@@ -44,14 +44,18 @@ Axiom Rle_total : forall (r1 r2 : Real), r1 <= r2 \/ r2 <= r1.
 Axiom Rle_add : forall (r0 r1 r2 : Real), r1 <= r2 -> r1 + r0 <= r2 + r0.
 Axiom Rle_mult : forall (r0 r1 r2 : Real), r0 >= Zero -> r1 <= r2 -> r1 * r0 <= r2 * r0.
 
-Hypothesis casep : forall (P : Prop), forall (A : Type), (P -> A) -> (~P -> A) -> A.
-
-Definition Rinv (r : Real) : Real -> bool.
+Lemma Rinv_unique : forall r, r <> Zero -> exists! r', r * r' = One.
 Proof.
-  apply (casep (r <> Zero)) => H.
-  exact (sing (UniqueOut _ (Rinv_prop r H))).
-  exact nil.
-Defined.
+Admitted.
+
+Definition Rinv (r : Real) (prf : r <> Zero) := UniqueOut _ (Rinv_unique r prf).
+
+Lemma Rinv_prop : forall (r : Real) (prf : r <> Zero), r * (Rinv r prf) = One.
+Proof.
+  move => r prf.
+  unfold Rinv.
+  apply: (@HUniqueOut _ (fun p => r * p = One)).
+Qed.
 
 End RealNum.
 End Classical_Analysis.
