@@ -142,9 +142,6 @@ Proof.
   }
 Qed.
 
-Definition refi1 {A : Set} (P : A -> Prop) : A -> bool :=
-  fun a => refi0 (P a).
-
 Definition refi2 {A B : Set} (P : A -> B -> Prop) : A -> B -> bool :=
   fun a b => refi0 (P a b).
 
