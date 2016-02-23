@@ -1,4 +1,4 @@
-Require Import ssreflect.
+Require Import ssreflect ssrbool.
 Require Import Classical_Prop.
 
 (*
@@ -7,9 +7,39 @@ Axiom constructive_definite_description :
     (exists! x, P x) -> { x : A | P x }.
  *)
 
+Definition Unique {A} (P : A -> Prop) := forall a b, P a /\ P b -> a = b.
+
+Lemma exists_Unique : forall {A} {P : A -> Prop}, (exists! x, P x) -> Unique P.
+Proof.
+  move => A P [x [exs unq]].
+  move => a b [Pa Pb].
+  transitivity x.
+  symmetry.
+  apply unq.
+    by [].
+    apply unq.
+      by [].
+Qed.  
+  
 Axiom UniqueOut : forall {A} (P : A -> Prop), (exists! x, P x) -> A.
 Axiom HUniqueOut : forall {A} {P : A -> Prop} (prf : exists! x, P x), P (UniqueOut P prf).
 
+Lemma UniqueOut_eq :
+  forall {A} {P : A -> Prop} (prf : exists! x, P x),
+  forall y, P y <-> UniqueOut P prf = y.
+Proof.
+  move => A P prf y.
+  split.
+  {
+    move => Py.
+    apply (exists_Unique prf).
+    split; [ | by[]].
+    exact: HUniqueOut.
+  } {
+    move =><-.
+    exact: HUniqueOut.
+  }
+Qed.
   
 Theorem unique_choice :
  forall (A B:Type) (R:A -> B -> Prop),
@@ -71,3 +101,59 @@ Qed.
 
 Definition refi0 (P : Prop) : bool :=
   UniqueOut _ (Prop_to_bool_Unique_bool P).
+
+Lemma refi0_true :
+  forall P,
+    P <-> refi0 P = true.
+Proof.
+  intro P.
+  split.
+  {
+    unfold refi0.
+    move => pH.
+    apply UniqueOut_eq.
+    exact: (Prop_to_bool_true _ pH).
+  } {
+    unfold refi0.
+    move => eqH.
+    apply UniqueOut_eq in eqH.
+    move: eqH.
+    exact: true_Prop_to_bool.
+  }
+Qed.
+
+Lemma refi0_false :
+  forall P,
+    ~P <-> refi0 P = false.
+Proof.
+  intro P.
+  split.
+  {
+    unfold refi0.
+    move => pH.
+    apply UniqueOut_eq.
+    exact: (Prop_to_bool_false _ pH).
+  } {
+    unfold refi0.
+    move => eqH.
+    apply UniqueOut_eq in eqH.
+    move: eqH.
+    exact: false_Prop_to_bool.
+  }
+Qed.
+
+Lemma casep : forall (P : Prop), forall (A : Type), (P -> A) -> (~P -> A) -> A.
+  move => P A.
+  case: (boolP (refi0 P)).
+  {
+    move => refiH.
+    apply refi0_true in refiH.
+    exact (fun f _ => f refiH).
+  } {
+    move/ negbTE.
+    move => refiH.
+    apply refi0_false in refiH.
+    exact (fun _ f => f refiH).
+  }
+Qed.
+
