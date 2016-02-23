@@ -2,3 +2,7 @@
 *~
 \#*\#
 .\#*
+
+# compiled coq files
+*.glob
+*.vo
